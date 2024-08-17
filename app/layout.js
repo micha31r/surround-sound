@@ -1,4 +1,8 @@
 import { Inter } from "next/font/google";
+import AuthProvider from "@/components/AuthProvider";
+import Script from "next/script";
+import clsx from "clsx";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -11,7 +15,22 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={clsx("min-h-svh w-full", inter.className)}>
+        <Script
+          src="/registerAuthServiceWorker.js"
+          strategy="beforeInteractive"
+        />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <AuthProvider>
+            {children}
+          </AuthProvider>
+        </ThemeProvider>
+      </body>
     </html>
   );
 }
