@@ -1,5 +1,13 @@
 'use client'
 
+const permissions = [
+  "user-read-private",
+  "user-read-email",
+  "playlist-modify-private",
+  "playlist-modify-public",
+  "ugc-image-upload",
+]
+
 // Redirect to Spotify auth flow
 export async function redirectToAuthFlow(clientId) {
   const verifier = generateCodeVerifier(128);
@@ -11,7 +19,7 @@ export async function redirectToAuthFlow(clientId) {
   params.append("client_id", clientId);
   params.append("response_type", "code");
   params.append("redirect_uri", "http://localhost:3000/callback");
-  params.append("scope", "user-read-private user-read-email");
+  params.append("scope", permissions.join(" "));
   params.append("code_challenge_method", "S256");
   params.append("code_challenge", challenge);
 

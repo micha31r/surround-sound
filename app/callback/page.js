@@ -53,6 +53,9 @@ export default function AuthCallbackPage() {
             throw new Error('Failed to get access token')
           }
 
+          // Save access token to local storage
+          localStorage.setItem('spotifyAccessToken', accessToken)
+
           // Get Spotify user profile
           const { id } = await fetchSpotifyProfile(accessToken)
 

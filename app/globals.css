@@ -86,3 +86,15 @@
 .firebase-emulator-warning { 
   display: none !important;
 }
+
+/* Set text selection colors */
+
+::-moz-selection {
+  color: hsl(var(--background));
+  background: hsl(var(--foreground));
+}
+
+::selection {
+  color: hsl(var(--background));
+  background: hsl(var(--foreground));
+}
