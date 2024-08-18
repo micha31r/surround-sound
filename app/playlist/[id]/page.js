@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import SpotifyPlayer from "@/components/SpotifyPlayer"
 import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 
 // Convert image URL to base64
 // https://stackoverflow.com/questions/22172604/convert-image-from-url-to-base64
@@ -115,7 +116,9 @@ export default function PlaylistDetailPage() {
   }
 
   return (
-    <main className="w-full space-y-8">
+    <main className={cn("flex-1 opacity-0 transition-opacity w-full space-y-8 min-h-[calc(100svh-112px)]", {
+      "opacity-100": !!songs.length
+    })}>
       <Section className="flex-1" classNameInner="gap-3">
         <img className="w-40 aspect-square object-cover rounded-lg mx-auto" src={image} alt="playlist cover image" />
         <h1 className="text-lg font-medium">{title}</h1>
