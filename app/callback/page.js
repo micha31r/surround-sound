@@ -19,6 +19,7 @@ export async function getAccessToken(clientId, code) {
   params.append("code_verifier", verifier);
 
   const result = await fetch("https://accounts.spotify.com/api/token", {
+    mode: 'no-cors',
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: params
@@ -31,7 +32,8 @@ export async function getAccessToken(clientId, code) {
 // Get Spotify user profile
 async function fetchSpotifyProfile(token) {
   const result = await fetch("https://api.spotify.com/v1/me", {
-     method: "GET", headers: { Authorization: `Bearer ${token}` }
+    mode: 'no-cors',
+    method: "GET", headers: { Authorization: `Bearer ${token}` }
   });
 
   return await result.json();
