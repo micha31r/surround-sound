@@ -48,6 +48,7 @@ export default function DashboardPage() {
     const resultsString = await generateSongs(imageURL, colorName, topArtistsString)
 
     try {
+      console.log(resultsString)
       // Check if results is a valid JSON string
       const playlist = JSON.parse(resultsString)
 
