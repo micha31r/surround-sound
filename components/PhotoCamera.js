@@ -12,9 +12,7 @@ import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
 
 async function base64ToBlob(url) {
-  const response = await fetch(url, {
-    mode: 'no-cors'
-  })
+  const response = await fetch(url)
   const blob = response.blob()
   return blob
 }
