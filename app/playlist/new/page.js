@@ -165,7 +165,7 @@ export default function NewPlaylistPage() {
 
       {/* Spotify embedded player */}
       {currentTrackURI && (
-        <Section className="sticky bottom-0 flex-1 bg-background/50 backdrop-blur-lg" classNameInner="py-4">
+        <Section className="sticky bottom-[52px] flex-1 bg-background/80 backdrop-blur-lg" classNameInner="py-4">
           <div className="h-20 overflow-hidden rounded-xl">
             <SpotifyPlayer key={currentTrackURI} currentTrackURI={currentTrackURI} height={100} />
           </div>
