@@ -9,7 +9,7 @@
       "codebase": "default",
       "ignore": [
         "node_modules",
-        ".git",
+        ".git",;
         "firebase-debug.log",
         "firebase-debug.*.log",
         "*.local"
