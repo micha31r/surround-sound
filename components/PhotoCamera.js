@@ -23,14 +23,14 @@ export default function PhotoCamera ({ onSuccess, onError }) {
   const [image, setImage] = useState(null)
   const [canTakePhoto, setCanTakePhoto] = useState(true)
 
-  if (!auth.user) {
-    return null
-  }
-
   const colorCodeHex = JSON.parse(localStorage.getItem('colorCodeHex')) || 'transparent'
   const colorName = JSON.parse(localStorage.getItem('colorName'))
 
   const camera = useRef(null)
+
+  if (!auth.user) {
+    return null
+  }
 
   async function takePhoto() {
     const photo = camera.current.takePhoto()
