@@ -21,7 +21,9 @@ import { cn } from "@/lib/utils"
 // Convert image URL to base64
 // https://stackoverflow.com/questions/22172604/convert-image-from-url-to-base64
 async function URLToBase64(url) {
-  const data = await fetch(url)
+  const data = await fetch(url, {
+    mode: 'no-cors'
+  })
   const blob = await data.blob()
 
   return new Promise((resolve, reject) => {
