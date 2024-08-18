@@ -52,10 +52,10 @@ export default function NewPlaylistPage() {
   const [currentTrackURI, setCurrentTrackURI] = useState(null)
   const [allowPlaylistSave, setAllowPlaylistSave] = useState(true)
 
-  const playlistString = localStorage.getItem('playlistSongs')
-  const playlistImageURL = localStorage.getItem('playlistImageURL')
-  const playlistImagePath = localStorage.getItem('playlistImagePath')
-  const spotifyAccessToken = localStorage.getItem('spotifyAccessToken')
+  const playlistString = JSON.parse(localStorage.getItem('playlistSongs'))
+  const playlistImageURL = JSON.parse(localStorage.getItem('playlistImageURL'))
+  const playlistImagePath = JSON.parse(ocalStorage.getItem('playlistImagePath'))
+  const spotifyAccessToken = JSON.parse(localStorage.getItem('spotifyAccessToken'))
 
   useEffect(() => {
     if (!playlistString || !playlistImageURL || !playlistImagePath || !spotifyAccessToken || !auth.user) {
