@@ -6,6 +6,7 @@ const permissions = [
   "playlist-modify-private",
   "playlist-modify-public",
   "ugc-image-upload",
+  "user-top-read",
 ]
 
 // Redirect to Spotify auth flow

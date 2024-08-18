@@ -6,14 +6,34 @@ import { AuthContext } from "@/components/context"
 import { generateSongs } from "@/lib/openai/generate"
 import { getDownloadURL } from "firebase/storage";
 import { useRouter } from "next/navigation"
+import { getTopArtists } from "@/lib/spotify/songs"
 
 export default function DashboardPage() {
   const auth = useContext(AuthContext)
   const router = useRouter()
 
-  const colorCodeHex = JSON.parse(localStorage.getItem('colorCodeHex')) || 'transparent'
-
   async function onSuccess(snapshot) {
+    const spotifyAccessToken = localStorage.getItem('spotifyAccessToken')
+    const topArtists = await getTopArtists({ token: spotifyAccessToken })
+    const topArtistsList = []
+    console.log(topArtists)
+
+    // Set default top artists
+    if (!topArtists?.items?.length) {
+      topArtistsList.push("Drake")
+      topArtistsList.push("Kanye West")
+      topArtistsList.push("Taylor Swift")
+      topArtistsList.push("Olivia Rodrigo")
+      topArtistsList.push("Harry Styles")
+      topArtistsList.push("Billie Ellish")
+    } else {
+      topArtists.items.slice(0, 10).forEach(artist => {
+        topArtistsList.push(artist.name)
+      })
+    }
+
+    const topArtistsString = topArtistsList.join(", ")
+
     // Get image URL of the uploaded image
     const imageURL = await getDownloadURL(snapshot.ref)
 
@@ -25,7 +45,7 @@ export default function DashboardPage() {
     const colorName = localStorage.getItem('colorName') || 'yellow'
 
     // Generate songs based on parameters
-    const resultsString = await generateSongs(imageURL, colorName)
+    const resultsString = await generateSongs(imageURL, colorName, topArtistsString)
 
     try {
       // Check if results is a valid JSON string
@@ -47,9 +67,6 @@ export default function DashboardPage() {
           <div className="h-[calc(100svh-112px)]">
             <PhotoCamera onSuccess={onSuccess} />
           </div>
-          <div className="pointer-events-none select-none absolute w-full h-full inset-0 z-10 rounded-2xl opacity-20" style={{
-            background: colorCodeHex
-          }}></div>
         </div>
       </Section>
     </main>
