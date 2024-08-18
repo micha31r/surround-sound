@@ -16,8 +16,7 @@ import SpotifyPlayer from "@/components/SpotifyPlayer"
 // https://stackoverflow.com/questions/22172604/convert-image-from-url-to-base64
 async function URLToBase64(url) {
   const data = await fetch(url, {
-    // mode: 'no-cors'
-    mode: 'cors',
+    mode: 'no-cors'
   })
   const blob = await data.blob()
   console.log(blob)
