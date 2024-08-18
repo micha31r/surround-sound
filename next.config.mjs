@@ -4,6 +4,7 @@ const nextConfig = {
   experimental: {
     missingSuspenseWithCSRBailout: false,
   },
+  crossOrigin: 'anonymous',
   compiler: {
     // removeConsole: process.env.NODE_ENV === "production",
   },
