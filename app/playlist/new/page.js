@@ -10,6 +10,7 @@ import { createPlaylist } from "@/lib/spotify/songs"
 import { CameraIcon, PlusCircleIcon } from "@heroicons/react/24/solid"
 import { createFBPlaylist } from "@/lib/firebase/playlist"
 import { db } from "@/lib/firebase/clientApp"
+import SpotifyPlayer from "@/components/SpotifyPlayer"
 
 // Convert image URL to base64
 // https://stackoverflow.com/questions/22172604/convert-image-from-url-to-base64
@@ -35,6 +36,8 @@ export default function NewPlaylistPage() {
   const [summary, setSummary] = useState("")
   const [image, setImage] = useState("")
   const [songs, setSongs] = useState([])
+  const [currentTrackURI, setCurrentTrackURI] = useState(null)
+  const [allowPlaylistSave, setAllowPlaylistSave] = useState(true)
 
   const playlistString = localStorage.getItem('playlistSongs')
   const playlistImageURL = localStorage.getItem('playlistImageURL')
@@ -85,6 +88,8 @@ export default function NewPlaylistPage() {
     const spotifyUserId = auth.user.uid.split(":")[1]
 
     if (spotifyUserId) {
+      setAllowPlaylistSave(false)
+
       const playlistId = await createPlaylist({
         name: title,
         description: summary,
@@ -100,6 +105,8 @@ export default function NewPlaylistPage() {
         spotifyPlaylistId: playlistId,
         mood: "happy",
       })
+
+      router.push('/playlist/' + playlistId)
     }
   }
 
@@ -110,12 +117,19 @@ export default function NewPlaylistPage() {
         <h1 className="text-lg font-medium">{title}</h1>
         <p className="text-sm">{summary}</p>
         <div className="grid grid-cols-2 gap-2">
-          <Button className="gap-2" onClick={savePlaylistCallback}>
-            <span>Save Playlist</span>
-            <PlusCircleIcon className="w-5 h-5" />
+          <Button className="gap-2" onClick={savePlaylistCallback} disabled={!allowPlaylistSave}>
+            {allowPlaylistSave 
+              ? (
+                  <>
+                    <span>Save Playlist</span>
+                    <PlusCircleIcon className="w-5 h-5" />
+                  </>
+                )
+              : 'Saving...'
+            }
           </Button>
           <Button className="gap-2 text-muted-foreground" variant="secondary" onClick={() => router.push('/dashboard')}>
-            <span>Take Photo</span>
+            <span>Generate New</span>
             <CameraIcon className="w-5 h-5" />
           </Button>
         </div>
@@ -124,7 +138,7 @@ export default function NewPlaylistPage() {
       <Section className="flex-1">
         <div className="space-y-1">
           {songs.map((song) => (
-            <div key={song.id} className="flex items-center gap-2">
+            <div key={song.id} className="flex items-center gap-2" onClick={() => setCurrentTrackURI(song.uri)}>
               <Image className="w-12 h-12 rounded-md" src={song.album.images[0].url} alt={song.name} width={100} height={100} />
               <div>
                 <h2 className="text-sm line-clamp-1">{song.name}</h2>
@@ -134,6 +148,15 @@ export default function NewPlaylistPage() {
           ))}
         </div>
       </Section>
+
+      {/* Spotify embedded player */}
+      {currentTrackURI && (
+        <Section className="sticky bottom-0 flex-1 bg-background/50 backdrop-blur-lg" classNameInner="py-4">
+          <div className="h-20 overflow-hidden rounded-xl">
+            <SpotifyPlayer key={currentTrackURI} currentTrackURI={currentTrackURI} height={100} />
+          </div>
+        </Section>
+      )}
     </main>
   )
 }
