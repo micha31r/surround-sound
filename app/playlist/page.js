@@ -38,13 +38,13 @@ export default function PlaylistPage() {
 
   return (
     <main className="w-full space-y-8">
-      <Section className="flex-1" classNameInner="gap-3">
-        {/* <h1 className="text-3xl font-bold">Create a Playlist</h1> */}
+      <Section className="flex-1" classNameInner="gap-3 min-h-[calc(100svh-112px)]">
+        <h1 className="text-lg font-medium text-center my-8">Playlist Archive</h1>
         <div className="grid grid-cols-3 gap-1">
           {playlists.map((playlist, index) => {
             if (images[playlist.spotifyPlaylistId]) {
               return (
-                <div key={playlist.spotifyPlaylistId} onClick={() => router.push('/playlist/' + playlist.spotifyPlaylistId)}>
+                <div key={playlist.spotifyPlaylistId} className="cursor-pointer hover:opacity-60 transition-opacity" onClick={() => router.push('/playlist/' + playlist.spotifyPlaylistId)}>
                   <img className="w-40 aspect-[3/4] rounded-xl object-cover" src={images[playlist.spotifyPlaylistId]} alt="playlist cover image" />
                 </div>
               )
