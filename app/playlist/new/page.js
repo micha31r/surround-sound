@@ -126,7 +126,7 @@ export default function NewPlaylistPage() {
   return (
     <main className="w-full space-y-8">
       <Section className="flex-1" classNameInner="gap-3">
-        <img className="max-w-40 aspect-square object-cover rounded-lg mx-auto" src={image} alt="playlist cover image" />
+        <img key={image} className="max-w-40 aspect-square object-cover rounded-lg mx-auto" src={image} alt="playlist cover image" />
         <h1 className="text-lg font-medium">{title}</h1>
         <p className="text-sm">{summary}</p>
         <div className="grid grid-cols-2 gap-2">
