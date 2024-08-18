@@ -35,7 +35,7 @@ export default function PhotoCamera ({ onSuccess, onError }) {
   async function takePhoto() {
     const photo = camera.current.takePhoto()
     const blob = await base64ToBlob(photo)
-    const name = uuidv4()
+    const name = uuidv4() + '.jpg'
     const bucket = 'photos/' + auth.user.uid
 
     setCanTakePhoto(false)
