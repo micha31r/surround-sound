@@ -15,8 +15,9 @@ export default function DashboardPage() {
     // Get image URL of the uploaded image
     const imageURL = await getDownloadURL(snapshot.ref)
 
-    // Save image URL to local storage
+    // Save image URL and ID to local storage
     localStorage.setItem('playlistImageURL', imageURL)
+    localStorage.setItem('playlistImagePath', snapshot.ref.fullPath)
 
     // Generate songs based on parameters
     const resultsString = await generateSongs(imageURL)

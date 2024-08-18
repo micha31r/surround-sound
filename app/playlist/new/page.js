@@ -8,6 +8,8 @@ import Section from "@/components/Section"
 import { Button } from "@/components/ui/button"
 import { createPlaylist } from "@/lib/spotify/songs"
 import { CameraIcon, PlusCircleIcon } from "@heroicons/react/24/solid"
+import { createFBPlaylist } from "@/lib/firebase/playlist"
+import { db } from "@/lib/firebase/clientApp"
 
 // Convert image URL to base64
 // https://stackoverflow.com/questions/22172604/convert-image-from-url-to-base64
@@ -36,23 +38,14 @@ export default function NewPlaylistPage() {
 
   const playlistString = localStorage.getItem('playlistSongs')
   const playlistImageURL = localStorage.getItem('playlistImageURL')
-
-  if (!playlistString || !playlistImageURL) {
-    // Redirect to the dashboard if there are no playlist songs
-    router.push("/dashboard")
-    return null
-  }
-
-  // Get spotify auth token
+  const playlistImagePath = localStorage.getItem('playlistImagePath')
   const spotifyAccessToken = localStorage.getItem('spotifyAccessToken')
-        
-  // Login again if no access token
-  if (!spotifyAccessToken) {
-    router.push("/login")
-    return
-  }
 
   useEffect(() => {
+    if (!playlistString || !playlistImageURL || !playlistImagePath || !spotifyAccessToken || !auth.user) {
+      return
+    }
+
     (async () => {
       try {
         // Set playlist cover image
@@ -75,17 +68,37 @@ export default function NewPlaylistPage() {
     })()
   }, [])
 
+
+  if ((!playlistString || !playlistImageURL || !playlistImagePath)) {
+    // Redirect to the dashboard if there are no playlist songs
+    router.push("/dashboard")
+    return null
+  }
+
+  if (!spotifyAccessToken || !auth.user) {
+    // Redirect to login if auth is not valid
+    router.push("/login")
+    return null
+  }
+
   async function savePlaylistCallback() {
     const spotifyUserId = auth.user.uid.split(":")[1]
 
     if (spotifyUserId) {
-      await createPlaylist({
+      const playlistId = await createPlaylist({
         name: title,
         description: summary,
         image: image,
         songs: songs,
         userId: spotifyUserId,
         token: spotifyAccessToken,
+      })
+
+      await createFBPlaylist(db, {
+        userId: auth.user.uid,
+        imagePath: playlistImagePath,
+        spotifyPlaylistId: playlistId,
+        mood: "happy",
       })
     }
   }
@@ -102,11 +115,12 @@ export default function NewPlaylistPage() {
             <PlusCircleIcon className="w-5 h-5" />
           </Button>
           <Button className="gap-2 text-muted-foreground" variant="secondary" onClick={() => router.push('/dashboard')}>
-            <span>Take Another Photo</span>
+            <span>Take Photo</span>
             <CameraIcon className="w-5 h-5" />
           </Button>
         </div>
       </Section>
+      
       <Section className="flex-1">
         <div className="space-y-1">
           {songs.map((song) => (
