@@ -23,7 +23,7 @@ export async function redirectToAuthFlow(clientId) {
   const params = new URLSearchParams();
   params.append("client_id", clientId);
   params.append("response_type", "code");
-  params.append("redirect_uri", "http://localhost:3000/callback");
+  params.append("redirect_uri", `${process.env.NEXT_PUBLIC_DOMAIN}/callback`);
   params.append("scope", permissions.join(" "));
   params.append("code_challenge_method", "S256");
   params.append("code_challenge", challenge);

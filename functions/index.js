@@ -10,6 +10,7 @@ initializeApp({
 
 exports.signUp = onCall({ cors: [
   "http://localhost:3000",
+  "https://surround-sound.vercel.app",
 ] }, async (request) => {
   const { userId } = request.data;
 

@@ -15,7 +15,7 @@ export async function getAccessToken(clientId, code) {
   params.append("client_id", clientId);
   params.append("grant_type", "authorization_code");
   params.append("code", code);
-  params.append("redirect_uri", "http://localhost:3000/callback");
+  params.append("redirect_uri", `${process.env.NEXT_PUBLIC_DOMAIN}/callback`);
   params.append("code_verifier", verifier);
 
   const result = await fetch("https://accounts.spotify.com/api/token", {
