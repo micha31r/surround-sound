@@ -16,9 +16,11 @@ import SpotifyPlayer from "@/components/SpotifyPlayer"
 // https://stackoverflow.com/questions/22172604/convert-image-from-url-to-base64
 async function URLToBase64(url) {
   const data = await fetch(url, {
-    mode: 'no-cors'
+    // mode: 'no-cors'
+    mode: 'cors',
   })
   const blob = await data.blob()
+  console.log(blob)
 
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
@@ -51,11 +53,13 @@ export default function NewPlaylistPage() {
   const [songs, setSongs] = useState([])
   const [currentTrackURI, setCurrentTrackURI] = useState(null)
   const [allowPlaylistSave, setAllowPlaylistSave] = useState(true)
+  // console.log(localStorage.getItem('playlistImageURL'))
 
-  const playlistString = JSON.parse(localStorage.getItem('playlistSongs'))
-  const playlistImageURL = JSON.parse(localStorage.getItem('playlistImageURL'))
-  const playlistImagePath = JSON.parse(ocalStorage.getItem('playlistImagePath'))
-  const spotifyAccessToken = JSON.parse(localStorage.getItem('spotifyAccessToken'))
+  const playlistString = localStorage.getItem('playlistSongs')
+  const playlistImageURL = localStorage.getItem('playlistImageURL')
+  const playlistImagePath = localStorage.getItem('playlistImagePath')
+  const spotifyAccessToken = localStorage.getItem('spotifyAccessToken')
+
 
   useEffect(() => {
     if (!playlistString || !playlistImageURL || !playlistImagePath || !spotifyAccessToken || !auth.user) {
