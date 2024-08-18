@@ -37,7 +37,7 @@ export default function PlaylistPage() {
   }, [auth])
 
   return (
-    <main className="w-full h-svh space-y-8">
+    <main className="w-full space-y-8">
       <Section className="flex-1" classNameInner="gap-3">
         {/* <h1 className="text-3xl font-bold">Create a Playlist</h1> */}
         <div className="grid grid-cols-3 gap-1">
