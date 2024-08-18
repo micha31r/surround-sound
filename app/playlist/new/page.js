@@ -29,6 +29,17 @@ async function URLToBase64(url) {
   })
 }
 
+function formatDuration(ms) {
+  let totalSeconds = Math.floor(ms / 1000);
+  let minutes = Math.floor(totalSeconds / 60);
+  let seconds = totalSeconds % 60;
+
+  // Add leading zero to seconds if needed
+  let formattedSeconds = seconds < 10 ? '0' + seconds : seconds;
+
+  return `${minutes}:${formattedSeconds}`;
+}
+
 export default function NewPlaylistPage() {
   const router = useRouter()
   const auth = useContext(AuthContext)
@@ -140,9 +151,12 @@ export default function NewPlaylistPage() {
           {songs.map((song) => (
             <div key={song.id} className="flex items-center gap-2" onClick={() => setCurrentTrackURI(song.uri)}>
               <Image className="w-12 h-12 rounded-md" src={song.album.images[0].url} alt={song.name} width={100} height={100} />
-              <div>
-                <h2 className="text-sm line-clamp-1">{song.name}</h2>
-                <p className="text-sm text-muted-foreground line-clamp-1">{song.artists.map(artist => artist.name).join(", ")}</p>
+              <div className="flex w-full gap-2 items-center">
+                <div className="flex-1">
+                  <h2 className="text-sm line-clamp-1">{song.name}</h2>
+                  <p className="text-sm text-muted-foreground line-clamp-1">{song.artists.map(artist => artist.name).join(", ")}</p>
+                </div>
+                <p className="text-sm text-muted-foreground w-max">{formatDuration(song.duration_ms)}</p>
               </div>
             </div>
           ))}

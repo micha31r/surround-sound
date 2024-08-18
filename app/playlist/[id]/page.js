@@ -15,6 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import SpotifyPlayer from "@/components/SpotifyPlayer"
+import { Button } from "@/components/ui/button"
 
 // Convert image URL to base64
 // https://stackoverflow.com/questions/22172604/convert-image-from-url-to-base64
@@ -31,6 +32,17 @@ async function URLToBase64(url) {
     }
     reader.onerror = reject
   })
+}
+
+function formatDuration(ms) {
+  let totalSeconds = Math.floor(ms / 1000);
+  let minutes = Math.floor(totalSeconds / 60);
+  let seconds = totalSeconds % 60;
+
+  // Add leading zero to seconds if needed
+  let formattedSeconds = seconds < 10 ? '0' + seconds : seconds;
+
+  return `${minutes}:${formattedSeconds}`;
 }
 
 export default function PlaylistDetailPage() {
@@ -71,6 +83,7 @@ export default function PlaylistDetailPage() {
 
         if (playlist?.tracks?.items?.length) {
           for (const track of playlist.tracks.items) {
+            console.log(track.track)
             setSongs((songs) => [...songs, track.track])
           }
         }
@@ -108,17 +121,21 @@ export default function PlaylistDetailPage() {
         <h1 className="text-lg font-medium">{title}</h1>
         <p className="text-sm">{summary}</p>
 
-        <DropdownMenu>
-          <DropdownMenuTrigger className="flex gap-2 w-8 h-8 justify-center items-center bg-secondary text-muted-foreground rounded-full">
-            <EllipsisHorizontalIcon className="w-5 h-5" />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start">
-            <DropdownMenuItem className="w-max gap-2 text-muted-foreground cursor-pointer" onClick={deleteCallback}>
-              <TrashIcon className="w-4 h-4" />
-              <span>Remove From Library</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <div className="flex gap-2">
+          <Button onClick={() => setCurrentTrackURI('spotify:playlist:' + playlistId)} className="w-20 h-9 rounded-full">Play</Button>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger className="flex gap-2 w-9 h-9 justify-center items-center bg-secondary text-muted-foreground rounded-full">
+              <EllipsisHorizontalIcon className="w-5 h-5" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start">
+              <DropdownMenuItem className="w-max gap-2 text-muted-foreground cursor-pointer" onClick={deleteCallback}>
+                <TrashIcon className="w-4 h-4" />
+                <span>Remove From Library</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </Section>
       
       <Section className="flex-1">
@@ -126,9 +143,12 @@ export default function PlaylistDetailPage() {
           {songs.map((song) => (
             <div key={song.id} className="flex items-center gap-2" onClick={() => setCurrentTrackURI(song.uri)}>
               <Image className="w-12 h-12 rounded-md" src={song.album.images[0].url} alt={song.name} width={100} height={100} />
-              <div>
-                <h2 className="text-sm line-clamp-1">{song.name}</h2>
-                <p className="text-sm text-muted-foreground line-clamp-1">{song.artists.map(artist => artist.name).join(", ")}</p>
+              <div className="flex w-full gap-2 items-center">
+                <div className="flex-1">
+                  <h2 className="text-sm line-clamp-1">{song.name}</h2>
+                  <p className="text-sm text-muted-foreground line-clamp-1">{song.artists.map(artist => artist.name).join(", ")}</p>
+                </div>
+                <p className="text-sm text-muted-foreground w-max">{formatDuration(song.duration_ms)}</p>
               </div>
             </div>
           ))}
