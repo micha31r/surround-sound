@@ -8,6 +8,8 @@ import { getDownloadURL } from "firebase/storage";
 import { useRouter } from "next/navigation"
 import { getTopArtists } from "@/lib/spotify/songs"
 
+export const maxDuration = 60;
+
 export default function DashboardPage() {
   const auth = useContext(AuthContext)
   const router = useRouter()
