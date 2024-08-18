@@ -14,7 +14,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-
+import SpotifyPlayer from "@/components/SpotifyPlayer"
 
 // Convert image URL to base64
 // https://stackoverflow.com/questions/22172604/convert-image-from-url-to-base64
@@ -41,6 +41,7 @@ export default function PlaylistDetailPage() {
   const [summary, setSummary] = useState("")
   const [image, setImage] = useState("")
   const [songs, setSongs] = useState([])
+  const [currentTrackURI, setCurrentTrackURI] = useState(null)
 
   const playlistId = params.id
   const spotifyAccessToken = localStorage.getItem('spotifyAccessToken')
@@ -79,7 +80,6 @@ export default function PlaylistDetailPage() {
     })()
   }, [])
 
-
   if (!playlistId) {
     // Redirect to the dashboard if there are no playlist songs
     router.push("/playlist")
@@ -102,7 +102,7 @@ export default function PlaylistDetailPage() {
   }
 
   return (
-    <main className="w-full h-svh space-y-8">
+    <main className="w-full space-y-8">
       <Section className="flex-1" classNameInner="gap-3">
         <img className="w-40 aspect-square object-cover rounded-lg mx-auto" src={image} alt="playlist cover image" />
         <h1 className="text-lg font-medium">{title}</h1>
@@ -124,7 +124,7 @@ export default function PlaylistDetailPage() {
       <Section className="flex-1">
         <div className="space-y-1">
           {songs.map((song) => (
-            <div key={song.id} className="flex items-center gap-2">
+            <div key={song.id} className="flex items-center gap-2" onClick={() => setCurrentTrackURI(song.uri)}>
               <Image className="w-12 h-12 rounded-md" src={song.album.images[0].url} alt={song.name} width={100} height={100} />
               <div>
                 <h2 className="text-sm line-clamp-1">{song.name}</h2>
@@ -134,6 +134,15 @@ export default function PlaylistDetailPage() {
           ))}
         </div>
       </Section>
+
+      {/* Spotify embedded player */}
+      {currentTrackURI && (
+        <Section className="sticky bottom-0 flex-1 bg-background/50 backdrop-blur-lg" classNameInner="py-4">
+          <div className="h-20 overflow-hidden rounded-xl">
+            <SpotifyPlayer key={currentTrackURI} currentTrackURI={currentTrackURI} height={100} />
+          </div>
+        </Section>
+      )}
     </main>
   )
 }

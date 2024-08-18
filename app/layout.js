@@ -20,6 +20,10 @@ export default function RootLayout({ children }) {
           src="/registerAuthServiceWorker.js"
           strategy="beforeInteractive"
         />
+        <Script
+          src="https://open.spotify.com/embed/iframe-api/v1"
+          strategy="beforeInteractive"
+        />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
