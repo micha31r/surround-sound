@@ -94,6 +94,8 @@ export default function AuthCallbackPage() {
   }
 
   return (
-    <div>Signing in...</div>
+    <main className="w-screen h-svh flex">
+      <div className="m-auto">Signing in...</div>
+    </main>
   )
 }

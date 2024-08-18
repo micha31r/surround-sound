@@ -1,5 +1,9 @@
 'use client'
 
+import Logo from "@/components/Logo";
+import Section from "@/components/Section";
+import { Button } from "@/components/ui/button";
+
 const permissions = [
   "user-read-private",
   "user-read-email",
@@ -53,7 +57,20 @@ export default function LoginPage() {
 
   return (
     <div>
-      <button onClick={handleLogin}>Login with spotify</button>
+      <main className="flex flex-col min-h-[calc(100svh-60px)]">
+        <Section className="flex-1" classNameInner="space-y-8">
+          <div className="space-y-4 m-auto">
+            <Logo className="w-32 h-32 mx-auto" />
+            <h1 className="text-2xl font-medium text-center">SurroundSound</h1>
+            <p className="text-base text-center">Playlist generator based on your surroundings, mood, and favourite artists.</p>
+          </div>
+        </Section>
+        <Section classNameInner="space-y-8">
+          <div className="pb-4 w-full">
+            <Button onClick={handleLogin} className="bg-[#1ED760] text-black text-md w-full rounded-full">Login with Spotify</Button>
+          </div>
+        </Section>
+      </main>
     </div>
   )
 }
