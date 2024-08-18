@@ -2,6 +2,8 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
+### NB message michael.ren on discord to get info for a working spotify log in if you want to try the deployed website, spotify has not yet approved our production request
+
 First, run the development server:
 
 ```bash
