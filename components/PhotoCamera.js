@@ -66,7 +66,7 @@ export default function PhotoCamera ({ onSuccess, onError }) {
   return (
     <div className="flex w-full h-full relative rounded-2xl overflow-hidden">
       {image 
-        ? <img className="-scale-x-100" src={image} alt="photo preview" /> 
+        ? <img className="-scale-x-100 opacity-80" src={image} alt="photo preview" /> 
         : <Camera ref={camera} /> }
         
       {/* Color filter */}
@@ -80,6 +80,8 @@ export default function PhotoCamera ({ onSuccess, onError }) {
 
       {/* Shutter button */}
       <Button onClick={takePhoto} variant="ghost" className="absolute w-12 h-12 left-1/2 -translate-x-1/2 rounded-full bottom-4 bg-white" disabled={!canTakePhoto}/>
+      
+      {!canTakePhoto && <p className="cursor-pointer absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-2 rounded-md font-medium text-white">Generating...</p>}
     </div>
   );
 }
